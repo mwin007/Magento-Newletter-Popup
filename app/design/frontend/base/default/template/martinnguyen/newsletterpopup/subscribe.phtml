@@ -1,0 +1,100 @@
+<?php
+/**
+ * Frontend newsletter subscription template
+ *
+ * @category   design
+ * @package    MartinNguyen_NewsletterPopup
+ * @author     Martin Nguyen
+ */ 
+?>
+<?php
+$countries = Mage::getResourceModel('directory/country_collection')
+    ->loadData()
+    ->toOptionArray(false);
+?>
+<div class="block block-subscribe">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Newsletter') ?></span></strong>
+    </div>
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="newsletter-validate-detail">
+        <div class="block-content">
+        	
+            <p><?php echo $this->__('Sign Up for Our Newsletter:') ?></p>
+            
+	    	<ul class="form-list" style="list-style:none;">
+                <li>
+                    <label for="email" class="required"><em>*</em><?php echo $this->__('Email') ?>:</label><br>
+                     <div class="input-box" style="width:auto;">
+                        <input type="text" name="email" id="email" class="input-text required-entry validate-email" />
+                    </div>
+                </li>
+                <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_mobile')): ?>
+                <li>
+                    <label for="mobile"><?php echo $this->__('Mobile') ?>:</label><br>
+                    <div class="input-box">
+                        <input type="text" name="mobilenumber" id="mobile" class="input-text" />
+                    </div>
+                </li>
+                <?php endif; ?>      
+                <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_dob')): ?>
+                <li>
+                    <label for="dob"><?php echo $this->__('Date of Birth') ?>:</label><br>
+                    <div class="input-box">
+                        <?php echo $this->getChildHtml('html_calendar') ?>
+                        <input type="text" name="dob" id="mn_np_dob" class="input-text" style="width:110px !important; display:inline;" />
+                        <img title="<?php echo $this->__('Select date') ?>" id="mn_np_dob_trig" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>"  class="v-middle"/>
+                    </div>
+                    <script type="text/javascript">
+                        // <![CDATA[
+                        Calendar.setup({
+                            inputField : 'mn_np_dob',
+                            //ifFormat : '%m/%e/%y',
+                            button : 'mn_np_dob_trig',
+                            align : 'Br',
+                            singleClick : true
+                        });
+                        // ]]>
+                    </script>
+                </li>
+                <?php endif; ?>
+                <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_postal')): ?>
+                    <li>
+                        <label for="postal"><?php echo $this->__('Postal') ?>:</label><br>
+                        <div class="input-box">
+                            <input type="text" name="postal" id="postal" class="input-text" />
+                        </div>
+                    </li>
+                <?php endif; ?>
+			<?php if (Mage::getStoreConfig('newsletterpopup/fields/show_country')): ?>
+                <li>
+                        <div class="input-box" style="width:auto;">
+                        <?php if (count($countries) > 0){ ?>
+                            <select name='country' id='country'>
+                                <option value=''>-- Please Select --</option>
+                         
+                                <?php foreach($countries as $country){ ?>
+                                    <option value='<?php echo $country['value'] ?>'>
+                                        <?php echo $country['label'] ?>
+                                    </option>
+                                <?php } ?>
+                         
+                            </select>
+                        <?php } ?>
+                    </div>
+                </li>
+                <?php endif; ?>
+                </ul>
+
+            <p class="required">* <?php echo $this->__('required fields') ?></p>
+			
+            <div class="actions">
+                <button type="submit" title="<?php echo $this->__('Subscribe') ?>" class="button"><span><span><?php echo $this->__('Subscribe') ?></span></span></button>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var newsletterSubscriberFormDetail = new VarienForm('newsletter-validate-detail');
+    //]]>
+    </script>
+</div>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<adminhtml>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+      					<children>
+      						<config>
+      							<children>
+      								<newsletterpopup translate="title" module="martinnguyen_newsletterpopup">
+      									<title>Newsletter Popup</title>
+      								</newsletterpopup>
+      							</children>
+      						</config>
+      					</children>
+      				</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</adminhtml>

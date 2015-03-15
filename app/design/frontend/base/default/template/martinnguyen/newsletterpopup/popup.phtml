@@ -1,0 +1,252 @@
+<?php
+/**
+ * Frontend newsletter subscription template
+ *
+ * @category   design
+ * @package    MartinNguyen_NewsletterPopup
+ * @author     Martin Nguyen
+ */ 
+?>
+<style type="text/css">
+.mr-nl-popup-container {
+  position:fixed; 
+  left:0; 
+  top:0; 
+  right:0; 
+  bottom:0; 
+  z-index:998; 
+  max-width:100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color:rgba(30,10,20,0.8);
+}
+.mr-nl-popup-container,
+.mr-nl-popup-container * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.mr-nl-popup-frame {
+  width:300px;
+  max-width:90%;
+  margin:5% auto;
+}
+.mr-nl-popup-frame .block-subscribe {
+  position:relative;
+  width:100%;
+  background-color:#efeff2;
+  padding:10px;
+}
+.mr-nl-popup-frame .block-content {
+  background:transparent;
+}
+.mr-nl-popup-frame .block-subscribe p,
+.mr-nl-popup-frame .block-subscribe label {
+  color:#7FA5FD;
+}
+.mr-nl-popup-frame .block-subscribe .input-box {
+  width:auto;
+  position:relative;
+}
+.mr-nl-popup-frame .block-subscribe input,
+.mr-nl-popup-frame .block-subscribe select {
+  width:100%;
+}
+.mr-nl-popup-frame .block-subscribe .close {
+  float:right;
+  width:18px;
+  height:18px;
+  line-height:17px;
+  padding: 0;
+}
+.calendar {
+  z-index:999;
+}
+#mn_np_popup_dob_trig {
+  position: absolute;
+  padding:4px;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  right: -1px;
+  top: 50%;
+  margin-top: -12px;
+  cursor:pointer;
+}
+#mn_np_messagesBlock .messages {
+    margin-top:10px !important;
+}
+
+</style>
+<?php
+$countries = Mage::getResourceModel('directory/country_collection')
+    ->loadData()
+    ->toOptionArray(false);
+?>
+<?php $helper = $this->helper('wmg_newsletterpopup'); ?>
+<div id="mnNPPopupContainer" class="mr-nl-popup-container"<?php if ($helper->getPopupDelay() || $helper->isEmbedOnly()): ?> style="opacity:0; visibility: hidden;"<?php endif; ?>>
+    <div class="mr-nl-popup-frame">
+        <div class="block block-subscribe">
+            <div class="block-title">
+                <button type="button" id="mnNPPopupClose" class="close right" onclick="closeMNnpPopup('<?php echo !$helper->isEmbedOnly() ? 'dismiss' : ''; /* don't set mrnle_hide cookie when popup has been opened manually */ ?>');">&times;</button>
+                <strong><span><?php echo $this->__('Newsletter') ?></span></strong>
+            </div>
+            <div id="mn_np_messagesBlock"></div>
+            <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="newsletter-validate-detail-popup">
+                <div class="block-content">
+                    
+                    <p><?php echo $this->__('Sign Up for Our Newsletter:') ?></p>
+                    
+                    <ul class="form-list" style="list-style:none;">
+                        <li>
+                            <label for="email" class="required"><em>*</em><?php echo $this->__('Email') ?>:</label><br>
+                             <div class="input-box">
+                                <input type="text" name="email" id="email" class="input-text required-entry validate-email" />
+                            </div>
+                        </li>
+                        <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_mobile')): ?>
+                            <li>
+                                <label for="mobile"><?php echo $this->__('Mobile') ?>:</label><br>
+                                <div class="input-box">
+                                    <input type="text" name="mobilenumber" id="mobile" class="input-text validate-phoneLax" />
+                                </div>
+                            </li>
+                        <?php endif; ?>    
+                        <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_dob')): ?>
+                        <li>
+                            <label for="dob" class="required"><em>*</em><?php echo $this->__('Date of Birth') ?>:</label><br>
+                            <div class="input-box">
+                                <input type="text" name="dob" id="mn_np_popup_dob" class="input-text required-entry validate-date" placeholder="mm/dd/yyyy" />
+                                <img title="<?php echo $this->__('Select date') ?>" id="mn_np_popup_dob_trig" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>"  class="v-middle"/>
+                            </div>
+                            <script type="text/javascript">
+                                // <![CDATA[
+                                Calendar.setup({
+                                    inputField : 'mn_np_popup_dob',
+                                    ifFormat : '%m/%e/%y',
+                                    button : 'mn_np_popup_dob_trig',
+                                    align : 'Br',
+                                    singleClick : true
+                                });
+                                // ]]>
+                            </script>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_postal')): ?>
+                            <li>
+                                <label for="postal"><?php echo $this->__('Postal') ?>:</label><br>
+                                <div class="input-box">
+                                    <input type="text" name="postal" id="postal" class="input-text validate-zip" />
+                                </div>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (Mage::getStoreConfig('newsletterpopup/fields/show_country')): ?>
+                        <li>
+                            <label for="country"><?php echo $this->__('Country') ?>:</label><br>
+                            <div class="input-box" style="width:auto;">
+                                <?php if (count($countries) > 0){ ?>
+                                    <select name='country' id='country'>
+                                        <option value=''>-- Please Select --</option>
+                                 
+                                        <?php foreach($countries as $country){ ?>
+                                            <option value='<?php echo $country['value'] ?>'>
+                                                <?php echo $country['label'] ?>
+                                            </option>
+                                        <?php } ?>
+                                 
+                                    </select>
+                                <?php } ?>
+                            </div>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                    <p class="required">* <?php echo $this->__('required fields') ?></p>
+                    <p>By submitting my information above, I acknowledge that I have reviewed and agreed to the Terms of Use and Privacy Policy, and I agree to receive marketing messages from Atlantic Records, its affiliates and Cody Simpson with the latest news, updates and information about Cody Simpson. Please note that you can opt out of newsletters at any time by clicking on the Unsubscribe link at the bottom of the emails you receive.</p>
+                    
+                    <div class="actions">
+                        <button type="submit" title="<?php echo $this->__('Subscribe') ?>" class="button" style="background-color:#7FA5FD"><span><span><?php echo $this->__('Subscribe') ?></span></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    
+    // init form validation
+    var newsletterSubscriberFormDetailPopup = new VarienForm('newsletter-validate-detail-popup');
+    
+    function closeMNnpPopup(sAction) 
+    {
+        $('mnNPPopupContainer').fade({ duration: <?php echo $helper->getPopupFadeDuration(true); ?>, from: 1, to: 0 });
+        if ('dismiss' === sAction) {
+            // set cookie via ajax to not show the alert again
+            new Ajax.Request( "<?php echo Mage::getUrl('newsletterpopup/index/hidepopup', array('_forced_secure' => $this->getRequest()->isSecure())) ?>", {
+                method: "post",
+                onComplete: function() {
+                    (isSubmit === true) && newsletterSubscriberFormDetailPopup.submit();
+                },
+            });
+        }
+        else if ('reload' === sAction) {
+            // fade out popup and reload page
+            setTimeout(function()
+            {
+                window.location.reload();
+            }, <?php echo $helper->getPopupFadeDuration(); ?>);
+        }
+        else {
+            // reset display state of popup container to make it possible to reopen the popup again
+            setTimeout(function()
+            {
+                $('mnNPPopupContainer').setStyle({opacity: 0, visibility: 'hidden', display: ''});
+            }, <?php echo $helper->getPopupFadeDuration(); ?>);
+        }
+    }
+    
+    // function to use with "embed only", when popup should be opened manually
+    function showMNnpePopup()
+    {
+        $('mnNPPopupContainer')
+            .setStyle({opacity: 0, visibility: '', display:''})
+            .fade({ duration: <?php echo $helper->getPopupFadeDuration(true); ?>, from: 0, to: 1 });
+    }
+    
+    // prevent default submitting
+    new Event.observe('newsletter-validate-detail-popup', 'submit', function(e){
+        e.stop();
+    });
+    
+    // listen to onFormValidate and submit form only if validation succeeds
+    newsletterSubscriberFormDetailPopup.validator.options.onFormValidate = function(result, form) {
+        
+        if(result) {
+            // submit via ajax and ger errors if no success
+            new Ajax.Request( "<?php echo str_replace(array('https:', 'http:'), '', $this->getFormActionUrl()); ?>", {
+                parameters: $('newsletter-validate-detail-popup').serialize(true),
+                method: "post",
+                onComplete: function(transport) {
+                    if (transport.responseJSON) {
+                        
+                        // show error messages if no success and error messages given
+                        if (!transport.responseJSON.success && transport.responseJSON.messages) {
+                            $('mn_np_messagesBlock').update(transport.responseJSON.messages);
+                        }
+                        // otherwise fade out popup and reload page to see messages
+                        else {
+                            closeMNnpPopup('reload');
+                        } 
+                    }
+                },
+            });
+        }
+    };
+    
+    //  fade in after delay
+    <?php if (!$helper->isEmbedOnly() && $helper->getPopupDelay()): ?>
+    setTimeout(showMNnpePopup, <?php echo $helper->getPopupDelay(); ?>);
+    <?php endif; ?>
+    
+    //]]>
+</script>

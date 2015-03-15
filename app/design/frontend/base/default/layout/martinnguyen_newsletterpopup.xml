@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+    
+    <default>
+        
+        <!-- add css and js for date picker -->
+        <reference name="head">
+            <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"/>
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/><!--<if/><condition>can_load_calendar_js</condition>--></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>--></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>--></action>
+        </reference>
+        
+    </default>
+    
+    <STORE_default>
+        
+        <!-- add popup block (if enabled) -->
+        <block type="martinnguyen_newsletterpopup/popup" name="martinnguyen_newsletterpopup_popup" template="martinnguyen/newsletterpopup/popup.phtml"/>
+        <reference name="before_body_end">
+            <action method="append" ifconfig="newsletterpopup/popup/enabled"><block>martinnguyen_newsletterpopup_popup</block></action>
+        </reference>
+        
+    </STORE_default>
+    
+</layout>

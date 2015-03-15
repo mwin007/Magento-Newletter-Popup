@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <martinnguyen translate="label" module="martinnguyen_newsletterpopup">
+            <label>Martin Nguyen</label>
+            <sort_order>100</sort_order>
+        </martinnguyen>
+    </tabs>
+    <sections>
+        <newsletterpopup translate="label" module="martinnguyen_newsletterpopup">
+            <label>Newsletter Popup</label>
+            <tab>martinnguyen</tab>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <fields translate="label comment">
+                    <label>Subscription Form Fields</label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>                    
+                    <fields>
+                        <show_mobile translate="label comment">
+                            <label>Show Mobile Number</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_mobile>
+                        <show_dob translate="label comment">
+                            <label>Show Date of Birth</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_dob>
+                        <show_postal translate="label comment">
+                            <label>Show Postal Number</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_postal>
+                        <show_country translate="label comment">
+                            <label>Show Country</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_country>
+                    </fields>
+                </fields>
+            	<popup translate="label comment">
+            		<label>Popup Mode (Enable Or Onclick Button)</label>
+            		<sort_order>10</sort_order>
+            		<show_in_default>1</show_in_default>
+            		<show_in_website>1</show_in_website>
+            		<show_in_store>1</show_in_store>
+            		<fields>
+            			<enabled translate="label comment">
+            				<label>Enable Popup</label>
+            				<comment><![CDATA[Selecting Yes will enable the popup when a web page is loaded. 
+            				    Selecting "Use Onclick Button" will allow a popup when an onclick button is clicked.]).]]></comment>
+							<frontend_type>select</frontend_type>
+                            <source_model>MartinNguyen_NewsletterPopup_Model_System_Config_Source_Dropdown_Popupmode</source_model>
+            				<sort_order>1</sort_order>
+            				<show_in_default>1</show_in_default>
+            				<show_in_website>1</show_in_website>
+            				<show_in_store>1</show_in_store>
+            			</enabled>
+                        <delay translate="label comment">
+                            <label>Show delay</label>
+                            <comment><![CDATA[Set the delay in milliseconds. <br />(default: 0 = show emmediately)]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits</validate>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </delay>
+                        <fadeout_duration translate="label comment">
+                            <label>Fadein/out Time</label>
+                            <comment><![CDATA[Set the duration for the fade animation in milliseconds. <br />(default: 500 = half a second)]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits required-entry</validate>
+                            <depends>
+                                <enabled separator=",">1,2</enabled>
+                            </depends>
+                        </fadeout_duration>
+            			<visibility translate="label comment">
+            				<label>Visibility</label>
+            				<comment><![CDATA[Choose who should see the popup.]]></comment>
+							<frontend_type>select</frontend_type>
+                            <source_model>MartinNguyen_NewsletterPopup_Model_System_Config_Source_Dropdown_Visibility</source_model>
+            				<sort_order>30</sort_order>
+            				<show_in_default>1</show_in_default>
+            				<show_in_website>1</show_in_website>
+            				<show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+            			</visibility>
+            			<show_already_subscribed translate="label comment">
+            				<label>Show if already subscribed</label>
+            				<comment><![CDATA[Selecting Yes will enable the popup mode even for logged-in users that have already subscribed to the newsletter. (default: No)]]></comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+            				<sort_order>40</sort_order>
+            				<show_in_default>1</show_in_default>
+            				<show_in_website>1</show_in_website>
+            				<show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                                <visibility separator=",">0,1</visibility>
+                            </depends>
+            			</show_already_subscribed>
+                        <expires translate="label comment">
+                            <label>Cookie Expiration</label>
+                            <comment><![CDATA[Here you can define the expiration time for the cookie in minutes. When a user closes the popup or submits the form, it will not popup again for this long. <br />(default: 43200 = 30 days)]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits</validate>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </expires>
+            			<customers_longexpire translate="label comment">
+            				<label>Long Expire for Subscribers</label>
+            				<comment><![CDATA[Selecting Yes will set a long expire cookie for customers that have already subscribed to the newsletter so the popup won't appear even if they log out. Note: customers first have to be logged in once for the cookie to get activated. (default: No)]]></comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+            				<sort_order>60</sort_order>
+            				<show_in_default>1</show_in_default>
+            				<show_in_website>1</show_in_website>
+            				<show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                                <visibility separator=",">0,2</visibility>
+                                <show_already_subscribed>0</show_already_subscribed>
+                            </depends>
+            			</customers_longexpire>
+            		</fields>
+            	</popup>
+            </groups>
+        </newsletterpopup>
+    </sections>
+</config>

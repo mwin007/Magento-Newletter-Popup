@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MartinNguyen_NewsletterPopup>
+            <active>true</active>
+			<codePool>local</codePool>
+            <depends>
+            	<Mage_Newsletter />
+            </depends>
+        </MartinNguyen_NewsletterPopup>
+    </modules>
+</config>
